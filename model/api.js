@@ -88,6 +88,10 @@ async function getApiData (api, params = {}, name, uin, adapter, other = {}) {
     group_poke: async params => {
       await bot.pickGroup?.(params.group_id).pokeMember?.(params.user_id)
     },
+    // 获取设备信息
+    get_client: async params => {
+      await bot.pickGroup?.(params.group_id).client?.()
+    },
     // 获取好友列表
     get_friend_list: async params => {
       let list = await bot.getFriendArray?.() || await bot.getFriendList?.() || []
