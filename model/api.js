@@ -84,13 +84,26 @@ async function getApiData (api, params = {}, name, uin, adapter, other = {}) {
       let msg = (await getMsg({ onebot_id: params.message_id }))
       if (msg) await bot.pickGroup?.(params.group_id).setReaction?.(msg.seq, params.emoji_id, params.emoji_id.length > 4 ? 2 : 1)
     },
+    // 移除表情回应
+    unset_msg_emoji_like: async params => {
+      let msg = (await getMsg({ onebot_id: params.message_id }))
+      if (msg) await bot.pickGroup?.(params.group_id).delReaction?.(msg.seq, params.emoji_id, params.emoji_id.length > 4 ? 2 : 1)
+    },
     // 群友戳一戳
     group_poke: async params => {
       await bot.pickGroup?.(params.group_id).pokeMember?.(params.user_id)
     },
-    // 获取设备信息
-    get_client: async params => {
-      await bot.pickGroup?.(params.group_id).client?.()
+    // 获取群禁言列表
+    get_mute_member_list: async params => {
+      let list = await bot.pickGroup?.(params.group_id).getMuteMemberList?.() || []
+      if (Array.isArray(list)) {
+        ResponseData = list
+      } else if (list instanceof Map) {
+        ResponseData = Array.from(list.values())
+      }
+      for (const i in ResponseData) {
+        ResponseData[i].user_id = await getUser_id({ user_id: ResponseData[i].user_id })
+      }
     },
     // 获取好友列表
     get_friend_list: async params => {
