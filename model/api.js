@@ -79,6 +79,14 @@ async function getApiData (api, params = {}, name, uin, adapter, other = {}) {
         }
       }
     },
+    // 发送表情回应
+    set_msg_emoji_like: async params => {
+      await bot.pickGroup?.(params.group_id).setReaction?.(params.message_id, params.emoji_id, params.emoji_id.length > 4 ? 2 : 1)
+    },
+    // 群友戳一戳
+    group_poke: async params => {
+      await bot.pickGroup?.(params.group_id).pokeMember?.(params.user_id)
+    },
     // 获取好友列表
     get_friend_list: async params => {
       let list = await bot.getFriendArray?.() || await bot.getFriendList?.() || []
