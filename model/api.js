@@ -81,6 +81,7 @@ async function getApiData (api, params = {}, name, uin, adapter, other = {}) {
     },
     // 发送表情回应
     set_msg_emoji_like: async params => {
+      logger.info(`参数：` + params)
       await bot.pickGroup?.(params.group_id).setReaction?.(params.message_id, params.emoji_id, params.emoji_id.length > 4 ? 2 : 1)
     },
     // 群友戳一戳
