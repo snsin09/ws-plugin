@@ -93,6 +93,11 @@ async function getApiData (api, params = {}, name, uin, adapter, other = {}) {
     group_poke: async params => {
       await bot.pickGroup?.(params.group_id).pokeMember?.(params.user_id)
     },
+    // 查询共同群
+    search_same_group: async params => {
+      ResponseData = await bot.pickFriend?.(params.user_id).searchSameGroup?.()
+      if (!ResponseData) ResponseData = []
+    },
     // 获取群禁言列表
     get_mute_member_list: async params => {
       let list = await bot.pickGroup?.(params.group_id).getMuteMemberList?.() || []
